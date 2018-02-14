@@ -7,16 +7,14 @@ class Level1 : public GameLevel
 {
 	float y;
 	float ySpeed;
-	float ** ArrayofPoints;
+	float *** Array3D;
 	SpriteSheet* sprites;
 	SpriteSheet* planet1;
 	SpriteSheet* planet2;
 	SpriteSheet* planet3;
-	int rand1 = 2;
-	int rand2 = 14;
-	int rand3 = 32;
-	bool ChangePosition = true;
-	int what;
+	int f1;
+	int f2;
+	bool ChangePosition;
 
 
 public:
@@ -24,6 +22,5 @@ public:
 	void Unload() override;
 	void Update() override;
 	void Render() override;
-	void DeleteArray();
 
 };

@@ -28,7 +28,6 @@ public:
 	}
 
 	
-	float** GridArray();
 	void BeginDraw() { rendertarget->BeginDraw(); }
 	void EndDraw() { rendertarget->EndDraw(); }
 
@@ -36,7 +35,10 @@ public:
 	void DrawCircle(float c, float y, float radius, float r, float g, float b, float a);
 	
 	void DrawTriangle(float fc, float sc);
-	void Graphics::DrawGrid();
-	void Graphics::InitializeArray();
+	void DrawGrid();
+
+	void Initialize3dArray();
+	void DeleteArray3D();
+	float*** Get3DArray();
 	// Hrmmm... r, g, b, a? Where do we know these from?
 };

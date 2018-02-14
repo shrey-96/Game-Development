@@ -49,16 +49,6 @@ bool Graphics::Init(HWND windowHandle)
 	return true;
 }
 
-void Graphics::InitializeArray()
-{
-	pointarray = new float*[100];
-
-	for (int i = 0; i < 100; i++)
-	{
-		pointarray[i] = new float[2];
-	}
-}
-
 void Graphics::ClearScreen(float r, float g, float b) 
 {
 	rendertarget->Clear(D2D1::ColorF(r, g, b));
@@ -80,9 +70,14 @@ void Graphics::DrawGrid()
 	float gridheight = height / 10;
 	float gridwidth = width / 10;
 
-	int count = 0;
-	for (float x = 0; count < 10; x += gridwidth)
+	//int count = 0;
+	float x = 0;
+	float y = 0;
+	for (int count = 0; count < 10; count++)
 	{
+		
+		
+	
 		rendertarget->DrawLine(
 			D2D1::Point2F((float)x, 0.0f),
 			D2D1::Point2F((float)x, rtSize.height),
@@ -91,41 +86,29 @@ void Graphics::DrawGrid()
 		);
 
 		for (int i = 0; i < 10; i++)
-		{
-			//myArray[i][0] = x;
-			pointarray[count*10 + i][1] = x;
-
+		{		
+			array3d[count][i][0] = x;
+			array3d[count][i][1] = y;
+			y += gridheight;
 		}
+		x += gridwidth;
 
-		count++;
+		y = 0;
 				
 	}
 
-	count = 0;
-	for (float y = 0; count < 10; y += gridheight)
+	y = 0;
+	for (int count = 0; count < 10; count++)
 	{
+		y += gridheight;
+
 		rendertarget->DrawLine(
 			D2D1::Point2F(0.0f, y),
 			D2D1::Point2F(rtSize.width, y),
 			brush,
 			0.5f
-		);
-
-		for (int i = 0; i < 10; i++)
-		{
-			//myArray[i][1] = y;
-			pointarray[count*10 + i][1] = y;
-		}
-
-		count++;
-	}
-
-
-}
-
-float** Graphics::GridArray()
-{
-	return pointarray;
+		);	
+	}	
 }
 
 void Graphics::DrawTriangle(float fc, float sc)
@@ -137,12 +120,6 @@ void Graphics::DrawTriangle(float fc, float sc)
 	hr = trigeo->Open(&pSink);
 
 	pSink->SetFillMode(D2D1_FILL_MODE_WINDING);
-
-	// 400, 50
-	// 350, 0
-	// 450, 0
-	//fc = 400;
-	//sc = 50;
 
 	pSink->BeginFigure(
 		D2D1::Point2F(fc, sc),
@@ -165,5 +142,48 @@ void Graphics::DrawTriangle(float fc, float sc)
 
 	brush->SetColor(D2D1::ColorF(D2D1::ColorF::Green, 1.f));
 	rendertarget->DrawGeometry(trigeo, brush, 1.f);
+}
+
+void Graphics::Initialize3dArray()
+{
+	int row = 10;
+	int col = 10;
+	int atr = 2;
+
+	array3d = new float**[row];
+
+	for (int i = 0; i < row; i++)
+	{
+		array3d[i] = new float*[col];
+
+		for (int k = 0; k < col; k++)
+		{
+			array3d[i][k] = new float[atr];
+		}
+	}
+}
+
+float*** Graphics::Get3DArray()
+{
+	return array3d;
+}
+
+void Graphics::DeleteArray3D()
+{
+	int row = 10;
+	int col = 10;
+	int atr = 2;
+
+	for (int i = 0; i < row; i++)
+	{
+
+		for (int k = 0; k < col; k++)
+		{
+			delete[] array3d[i][k];
+		}
+
+		delete[] array3d[i];
+	}
+	delete[] array3d;
 }
 
