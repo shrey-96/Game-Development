@@ -11,6 +11,7 @@ class Graphics
 	ID2D1HwndRenderTarget* rendertarget; //this is typically an area in our GPU memory.. like a back buffer 
 	ID2D1SolidColorBrush* brush; //Note this COM interface! Remember to release it!
 	HRESULT hr;
+	float myArray[100][2];
 	
 public:
 	Graphics();
@@ -24,6 +25,8 @@ public:
 		return rendertarget;
 	}
 
+	
+
 	void BeginDraw() { rendertarget->BeginDraw(); }
 	void EndDraw() { rendertarget->EndDraw(); }
 
@@ -31,5 +34,6 @@ public:
 	void DrawCircle(float c, float y, float radius, float r, float g, float b, float a);
 	
 	void DrawTriangle(float fc, float sc);
+	void Graphics::DrawGrid();
 	// Hrmmm... r, g, b, a? Where do we know these from?
 };

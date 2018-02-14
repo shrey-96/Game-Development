@@ -60,6 +60,55 @@ void Graphics::DrawCircle(float x, float y, float radius, float r, float g, floa
 	rendertarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), brush, 3.0f);	
 }
 
+void Graphics::DrawGrid()
+{
+	D2D1_SIZE_F rtSize = rendertarget->GetSize();
+
+	// Draw a grid background.
+	float width = rtSize.width;
+	float height = rtSize.height;
+	float gridheight = height / 10;
+	float gridwidth = width / 10;
+
+	int count = 0;
+	for (float x = 0; count < 10; x += gridwidth)
+	{
+		rendertarget->DrawLine(
+			D2D1::Point2F((float)x, 0.0f),
+			D2D1::Point2F((float)x, rtSize.height),
+			brush,
+			0.5f
+		);
+
+		for (int i = 0; i < 10; i++)
+		{
+			myArray[i][0] = x;
+		}
+
+		count++;
+				
+	}
+
+	count = 0;
+	for (float y = 0; count < 10; y += gridheight)
+	{
+		rendertarget->DrawLine(
+			D2D1::Point2F(0.0f, y),
+			D2D1::Point2F(rtSize.width, y),
+			brush,
+			0.5f
+		);
+
+		for (int i = 0; i < 10; i++)
+		{
+			myArray[i][1] = y;
+		}
+
+		count++;
+	}
+
+
+}
 
 void Graphics::DrawTriangle(float fc, float sc)
 {
@@ -82,8 +131,8 @@ void Graphics::DrawTriangle(float fc, float sc)
 		D2D1_FIGURE_BEGIN_FILLED
 	);
 	D2D1_POINT_2F points[2] = {
-		D2D1::Point2F(fc - 50, sc - 50),
-		D2D1::Point2F(fc + 50, sc - 50)
+		D2D1::Point2F(fc - 30, sc - 50),
+		D2D1::Point2F(fc + 30, sc - 50)
 	};
 
 	pSink->AddLines(points, ARRAYSIZE(points));
@@ -99,3 +148,4 @@ void Graphics::DrawTriangle(float fc, float sc)
 	brush->SetColor(D2D1::ColorF(D2D1::ColorF::Green, 1.f));
 	rendertarget->DrawGeometry(trigeo, brush, 1.f);
 }
+
