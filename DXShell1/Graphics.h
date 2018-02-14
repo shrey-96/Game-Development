@@ -12,6 +12,8 @@ class Graphics
 	ID2D1SolidColorBrush* brush; //Note this COM interface! Remember to release it!
 	HRESULT hr;
 	float myArray[100][2];
+	float** pointarray = 0;
+	float*** array3d = 0;
 	
 public:
 	Graphics();
@@ -26,7 +28,7 @@ public:
 	}
 
 	
-
+	float** GridArray();
 	void BeginDraw() { rendertarget->BeginDraw(); }
 	void EndDraw() { rendertarget->EndDraw(); }
 
@@ -35,5 +37,6 @@ public:
 	
 	void DrawTriangle(float fc, float sc);
 	void Graphics::DrawGrid();
+	void Graphics::InitializeArray();
 	// Hrmmm... r, g, b, a? Where do we know these from?
 };

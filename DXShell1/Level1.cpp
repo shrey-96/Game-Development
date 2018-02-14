@@ -2,6 +2,8 @@
 #include "Graphics.h"
 #include "Level1.h"
 
+
+
 void Level1::Load() 
 {
 	y = 0.0f;
@@ -25,23 +27,61 @@ void Level1::Update()
 	y += ySpeed;
 	if (y > 700)
 	{
+		what++;
 		y = 0;
+		ChangePosition = true;
+		
 	}
 }
 
 void Level1::Render()
 {
-	
+	if (ChangePosition)
+	{
+		for (int k = 0; k < 10; k++)
+		{
+			srand(time(NULL));
+			rand1 = rand() % 94 + 1;
+
+			srand(time(NULL));
+			rand2 = rand() % 95 + 2;
+
+			srand(time(NULL));
+			rand3 = rand() % 96 + 1;
+		}
+
+		
+		ChangePosition = false;
+	}
+
 	gfx->ClearScreen(0.0f, 0.0f, 0.5f);
 	
 	sprites->Draw(0, 0);
+	gfx->InitializeArray();
 	gfx->DrawGrid();
-	planet1->Draw(10, 30);
-	planet2->Draw(200, 400);
-	planet3->Draw(700, 200);
+	ArrayofPoints = gfx->GridArray();
+		
 	
-	gfx->DrawTriangle(512, y);	
+	//  ArrayofPoints[rand1][0], ArrayofPoints[rand1][1]
+	//	ArrayofPoints[rand2][0], ArrayofPoints[rand2][1]
+	//	ArrayofPoints[rand3][0], ArrayofPoints[rand3][1]
+	planet1->Draw(ArrayofPoints[what][0], ArrayofPoints[what][1]);
+	planet2->Draw(ArrayofPoints[rand2][0], ArrayofPoints[rand2][1]);
+	planet3->Draw(ArrayofPoints[rand3][0], ArrayofPoints[rand3][1]);
 	
+	gfx->DrawTriangle(512, y);
+	DeleteArray();
+	
+}
+
+void Level1::DeleteArray()
+{
+	for (int i = 0; i < 100; i++)
+	{
+		delete[] ArrayofPoints[i];
+	}
+
+delete[] ArrayofPoints;
 }
 
 

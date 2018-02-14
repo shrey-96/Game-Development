@@ -49,6 +49,16 @@ bool Graphics::Init(HWND windowHandle)
 	return true;
 }
 
+void Graphics::InitializeArray()
+{
+	pointarray = new float*[100];
+
+	for (int i = 0; i < 100; i++)
+	{
+		pointarray[i] = new float[2];
+	}
+}
+
 void Graphics::ClearScreen(float r, float g, float b) 
 {
 	rendertarget->Clear(D2D1::ColorF(r, g, b));
@@ -82,7 +92,9 @@ void Graphics::DrawGrid()
 
 		for (int i = 0; i < 10; i++)
 		{
-			myArray[i][0] = x;
+			//myArray[i][0] = x;
+			pointarray[count*10 + i][1] = x;
+
 		}
 
 		count++;
@@ -101,13 +113,19 @@ void Graphics::DrawGrid()
 
 		for (int i = 0; i < 10; i++)
 		{
-			myArray[i][1] = y;
+			//myArray[i][1] = y;
+			pointarray[count*10 + i][1] = y;
 		}
 
 		count++;
 	}
 
 
+}
+
+float** Graphics::GridArray()
+{
+	return pointarray;
 }
 
 void Graphics::DrawTriangle(float fc, float sc)
