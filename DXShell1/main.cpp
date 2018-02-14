@@ -44,7 +44,7 @@ int WINAPI wWinMain(
 	RegisterClassEx(&windowclass);
 
 
-	RECT rect = { 0, 100, 1024, 768 };//Do these numbers look significant to you? What are they?
+	RECT rect = { 0, 0, 1024, 768 };//Do these numbers look significant to you? What are they?
 	AdjustWindowRectEx(&rect, WS_OVERLAPPED, false, WS_EX_OVERLAPPEDWINDOW);
 
 	//Below is another important process to understand... what are we doing?

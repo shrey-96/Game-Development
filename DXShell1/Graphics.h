@@ -11,8 +11,6 @@ class Graphics
 	ID2D1HwndRenderTarget* rendertarget; //this is typically an area in our GPU memory.. like a back buffer 
 	ID2D1SolidColorBrush* brush; //Note this COM interface! Remember to release it!
 	HRESULT hr;
-	float myArray[100][2];
-	float** pointarray = 0;
 	float*** array3d = 0;
 	
 public:

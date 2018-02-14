@@ -17,6 +17,6 @@ public:
 	~SpriteSheet();
 
 	//Draw bitmap to the render target
-	void Draw(float x, float y);
+	void Draw(float x, float y, float swt, float sht, float wcentre, float hcentre);
 
 };

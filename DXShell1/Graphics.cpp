@@ -93,8 +93,7 @@ void Graphics::DrawGrid()
 		}
 		x += gridwidth;
 
-		y = 0;
-				
+		y = 0;				
 	}
 
 	y = 0;

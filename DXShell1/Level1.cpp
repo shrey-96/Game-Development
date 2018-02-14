@@ -19,7 +19,7 @@ void Level1::Load()
 	fx3 = fy3 = 8;
 	ChangePosition = false;
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 }
 
 
@@ -31,7 +31,7 @@ void Level1::Unload()
 
 void Level1::Update()
 {
-	ySpeed = 8;
+	ySpeed = 6;
 	y += ySpeed;
 	if (y > 700)
 	{
@@ -74,15 +74,15 @@ void Level1::Render()
 
 	gfx->ClearScreen(0.0f, 0.0f, 0.5f);
 	
-	sprites->Draw(0, 0);
+	sprites->Draw(0, 0, 0, 0, 0, 0);
 	gfx->Initialize3dArray();
 	gfx->DrawGrid();
 	Array3D = gfx->Get3DArray();
 	
 	
-	planet1->Draw(Array3D[fx1][fy1][0], Array3D[fx1][fy1][1]);
-	planet2->Draw(Array3D[fx2][fy2][0], Array3D[fx2][fy2][1]);;
-	planet3->Draw(Array3D[fx3][fy3][0], Array3D[fx3][fy3][1]);;
+	planet1->Draw(Array3D[fx1][fy1][0], Array3D[fx1][fy1][1], 25, 35, 16, 6);
+	planet2->Draw(Array3D[fx2][fy2][0], Array3D[fx2][fy2][1], 25, 35, 16, 6);
+	planet3->Draw(Array3D[fx3][fy3][0], Array3D[fx3][fy3][1], 10, 14, 10, 10);
 	
 	gfx->DrawTriangle(512, y);
 	gfx->DeleteArray3D();

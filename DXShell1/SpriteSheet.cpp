@@ -76,12 +76,12 @@ SpriteSheet::~SpriteSheet()
 	if (bmp) bmp->Release();
 }
 
-void SpriteSheet::Draw(float x, float y)
+void SpriteSheet::Draw(float x, float y, float swt, float sht, float wcentre, float hcentre)
 {
 	gfx->GetRenderTarget()->DrawBitmap(
 		bmp, //Bitmap we built from WIC
-		D2D1::RectF(x, y,
-			bmp->GetSize().width + x, bmp->GetSize().height + y), //Destination rectangle
+		D2D1::RectF(x + wcentre, y + hcentre,
+			bmp->GetSize().width + x - swt, bmp->GetSize().height + y - sht), //Destination rectangle
 		0.8f, //Opacity or Alpha
 		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
 		//Above - the interpolation mode to use if this object is 'stretched' or 'shrunk'. 
