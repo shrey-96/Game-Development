@@ -74,10 +74,11 @@ void Level1::Render()
 
 	gfx->ClearScreen(0.0f, 0.0f, 0.5f);
 	
-	sprites->Draw(0, 0, 0, 0, 0, 0);
+	
 	gfx->Initialize3dArray();
 	gfx->DrawGrid();
 	Array3D = gfx->Get3DArray();
+	sprites->Draw(0, 0, 0, 0, 0, 0);
 	
 	
 	planet1->Draw(Array3D[fx1][fy1][0], Array3D[fx1][fy1][1], 25, 35, 16, 6);

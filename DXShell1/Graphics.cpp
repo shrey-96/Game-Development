@@ -75,16 +75,6 @@ void Graphics::DrawGrid()
 	float y = 0;
 	for (int count = 0; count < 10; count++)
 	{
-		
-		
-	
-		rendertarget->DrawLine(
-			D2D1::Point2F((float)x, 0.0f),
-			D2D1::Point2F((float)x, rtSize.height),
-			brush,
-			0.5f
-		);
-
 		for (int i = 0; i < 10; i++)
 		{		
 			array3d[count][i][0] = x;
@@ -96,18 +86,7 @@ void Graphics::DrawGrid()
 		y = 0;				
 	}
 
-	y = 0;
-	for (int count = 0; count < 10; count++)
-	{
-		y += gridheight;
-
-		rendertarget->DrawLine(
-			D2D1::Point2F(0.0f, y),
-			D2D1::Point2F(rtSize.width, y),
-			brush,
-			0.5f
-		);	
-	}	
+	y = 0;	
 }
 
 void Graphics::DrawTriangle(float fc, float sc)
@@ -186,3 +165,26 @@ void Graphics::DeleteArray3D()
 	delete[] array3d;
 }
 
+
+
+
+// backup grid draw
+//for (int count = 0; count < 10; count++)
+//{
+//	y += gridheight;
+//
+//	rendertarget->DrawLine(
+//		D2D1::Point2F(0.0f, y),
+//		D2D1::Point2F(rtSize.width, y),
+//		brush,
+//		0.5f
+//	);
+//}
+
+//
+//rendertarget->DrawLine(
+//	D2D1::Point2F((float)x, 0.0f),
+//	D2D1::Point2F((float)x, rtSize.height),
+//	brush,
+//	0.5f
+//);
