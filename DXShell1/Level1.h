@@ -14,11 +14,10 @@ class Level1 : public GameLevel
 	SpriteSheet* planet1;
 	SpriteSheet* planet2;
 	SpriteSheet* planet3;
-	int f1;
-	int f2;
 	int fx1, fy1;
 	int fx2, fy2;
 	int fx3, fy3;
+	int SpaceshipPosition;
 	bool ChangePosition;
 
 

@@ -73,8 +73,16 @@ void Graphics::DrawGrid()
 	//int count = 0;
 	float x = 0;
 	float y = 0;
+	
 	for (int count = 0; count < 10; count++)
 	{
+
+		/*rendertarget->DrawLine(
+			D2D1::Point2F((float)x, 0.0f),
+			D2D1::Point2F((float)x, rtSize.height),
+			brush,
+			0.5f);*/
+
 		for (int i = 0; i < 10; i++)
 		{		
 			array3d[count][i][0] = x;
@@ -87,6 +95,18 @@ void Graphics::DrawGrid()
 	}
 
 	y = 0;	
+	// backup grid draw
+	/*for (int count = 0; count < 10; count++)
+	{
+		y += gridheight;
+	
+		rendertarget->DrawLine(
+			D2D1::Point2F(0.0f, y),
+			D2D1::Point2F(rtSize.width, y),
+			brush,
+			0.5f
+		);
+	}*/
 }
 
 void Graphics::DrawTriangle(float fc, float sc)
@@ -104,8 +124,8 @@ void Graphics::DrawTriangle(float fc, float sc)
 		D2D1_FIGURE_BEGIN_FILLED
 	);
 	D2D1_POINT_2F points[2] = {
-		D2D1::Point2F(fc - 30, sc - 50),
-		D2D1::Point2F(fc + 30, sc - 50)
+		D2D1::Point2F(fc - 20, sc - 30),
+		D2D1::Point2F(fc + 20, sc - 30)
 	};
 
 	pSink->AddLines(points, ARRAYSIZE(points));
@@ -115,7 +135,7 @@ void Graphics::DrawTriangle(float fc, float sc)
 
 	pSink->Release();
 
-	brush->SetColor(D2D1::ColorF(D2D1::ColorF::DarkGreen, 1.f));
+	brush->SetColor(D2D1::ColorF(D2D1::ColorF::ForestGreen, 1.f));
 	rendertarget->FillGeometry(trigeo, brush);
 
 	brush->SetColor(D2D1::ColorF(D2D1::ColorF::Green, 1.f));

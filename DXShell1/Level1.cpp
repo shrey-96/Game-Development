@@ -12,11 +12,10 @@ void Level1::Load()
 	planet1 = new SpriteSheet(L"Planet1.bmp", gfx);
 	planet2 = new SpriteSheet(L"Planet2.bmp", gfx);
 	planet3 = new SpriteSheet(L"Planet3.bmp", gfx);
-	f1 = 0;
-	f2 = 0;
 	fx1 = fy1 = 2;
 	fx2 = fy2 = 6;
 	fx3 = fy3 = 8;
+	SpaceshipPosition = 5;
 	ChangePosition = false;
 
 	srand((unsigned int)time(NULL));
@@ -31,7 +30,7 @@ void Level1::Unload()
 
 void Level1::Update()
 {
-	ySpeed = 6;
+	ySpeed = 3.5;
 	y += ySpeed;
 	if (y > 700)
 	{
@@ -42,10 +41,12 @@ void Level1::Update()
 
 void Level1::Render()
 {
+
 	if (ChangePosition)
 	{	
 		fx1 = GetRand(10);
 		fy1 = GetRand(10);
+		SpaceshipPosition = GetRand(8) + 2;
 
 		while (true)
 		{
@@ -74,18 +75,18 @@ void Level1::Render()
 
 	gfx->ClearScreen(0.0f, 0.0f, 0.5f);
 	
-	
+	sprites->Draw(0, 0, 0, 0, 0, 0);
 	gfx->Initialize3dArray();
 	gfx->DrawGrid();
 	Array3D = gfx->Get3DArray();
-	sprites->Draw(0, 0, 0, 0, 0, 0);
+	
 	
 	
 	planet1->Draw(Array3D[fx1][fy1][0], Array3D[fx1][fy1][1], 25, 35, 16, 6);
 	planet2->Draw(Array3D[fx2][fy2][0], Array3D[fx2][fy2][1], 25, 35, 16, 6);
 	planet3->Draw(Array3D[fx3][fy3][0], Array3D[fx3][fy3][1], 10, 14, 10, 10);
 	
-	gfx->DrawTriangle(512, y);
+	gfx->DrawTriangle(Array3D[5][0][0] + 50, y);
 	gfx->DeleteArray3D();
 	
 }
