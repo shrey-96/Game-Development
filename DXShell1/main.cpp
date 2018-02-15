@@ -1,3 +1,14 @@
+/*********************************************************************************
+*	File:		main.cpp														 *
+*	Author:		Shreyansh Tiwari												 *
+*	Date:		14th February, 2018												 *
+*	Purpose:	This file invokes sets the attribute of main window, and it		 *
+*				invokes other classes such as gamecontroller for rendering		 *
+*				graphics for rendertarget, and level1 for game logic.			 *
+*				This file consist of infinite loop that keeps the game running	 *
+*				until interrupted.												 *
+**********************************************************************************/
+
 #include <Windows.h>
 #include "Graphics.h"
 #include "Level1.h"
@@ -5,24 +16,17 @@
 
 Graphics* graphics;
 
-/*
-Your Mission: Document the following code. What do all these components do?
-*/
 LRESULT CALLBACK WindowProc(
-	HWND hwnd,
-	UINT uMsg,
+	HWND hwnd,		// window handler
+	UINT uMsg,		// message sent by gameloop
 	WPARAM wParam,
 	LPARAM lParam )
 {
 	if (uMsg == WM_DESTROY) { PostQuitMessage(0); return 0; }
 	
-//BIG CHANGE! We are not Drawing/rendering here! 
-// We've moved this down to the message handling loop below
-
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-// Have you seen a 'main' for a Win32 app before? Please comment this.
 int WINAPI wWinMain(
 	HINSTANCE hInstance,
 	HINSTANCE prevInstance,
@@ -30,29 +34,30 @@ int WINAPI wWinMain(
 	int nCmdShow
 )
 {
-	//Do a bit of reading - What is this Window Class used for? 
-	// What are the major parameters below?
+	// define attributes for our main window
 	WNDCLASSEX windowclass;
-	ZeroMemory(&windowclass, sizeof(WNDCLASSEX));
+	ZeroMemory(&windowclass, sizeof(WNDCLASSEX));	// clear the struct before using it
 	windowclass.cbSize = sizeof(WNDCLASSEX);
 	windowclass.hbrBackground = (HBRUSH)COLOR_WINDOW;
 	windowclass.hInstance = hInstance;
 	windowclass.lpfnWndProc = WindowProc;
 	windowclass.lpszClassName = "MainWindow";
-	windowclass.style = CS_HREDRAW | CS_VREDRAW; //Alert - This is useful here... what does it do?
+	windowclass.style = CS_HREDRAW | CS_VREDRAW; 
 
+	// register our window
 	RegisterClassEx(&windowclass);
 
 
-	RECT rect = { 0, 0, 1024, 768 };//Do these numbers look significant to you? What are they?
+	// define resolution of main window
+	RECT rect = { 0, 0, 1024, 768 };
 	AdjustWindowRectEx(&rect, WS_OVERLAPPED, false, WS_EX_OVERLAPPEDWINDOW);
 
-	//Below is another important process to understand... what are we doing?
-	//Why is this connected to rect we just defined above?
+	// create window using values in struct above of 1024x768 resolution
 	HWND windowhandle = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, "MainWindow", "DirectXShell1", WS_OVERLAPPEDWINDOW, 100, 100, 
 		rect.right - rect.left, rect.bottom - rect.top, NULL, NULL, hInstance, 0);
 	if (!windowhandle) return -1;
 
+	// instantiate graphics class
 	graphics = new Graphics();
 	if (!graphics->Init(windowhandle))
 	{
@@ -60,31 +65,28 @@ int WINAPI wWinMain(
 		return -1;
 	}
 
+	// initialise graphics and display window
 	GameLevel::Init(graphics);
 	ShowWindow(windowhandle, nCmdShow);
 	GameController::LoadInitialLevel(new Level1());
 
 #pragma region GameLoop
-	//Below, we have essentially an infinite loop that will keep the window running and will dispatch/show messages
-	//As many people will tell you, most Windows you see are just infinite loops waiting for some kind of work-flow or 
-	//system-based interuption.
+	
 
-	//Note - Our message handling has changed from the first demo code.
-	//Here, we use a PeekMessage to avoid locking the graphics/windoProc
-	//when a message has to be dispatched.
+	// run infinite game loop here
 	MSG message;
-	message.message = WM_NULL; //Do not have this set to WM_QUIT, which has a specific context
+	message.message = WM_NULL; 
 	while (message.message != WM_QUIT)
 	{
+		// check if any pending message, send if any
 		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
-			//This allows us to send a message to the WindowProc IF there is one
 			DispatchMessage(&message);
 		else
 		{
-			//Update Routine... we've moved the code for handling updates to GameController
+			// update game attributes
 			GameController::Update();
 
-			//Render Routine... This is very modular. GameController now handles the rendering
+			// draw the assets to the screen
 			graphics->BeginDraw();
 			GameController::Render();
 			graphics->EndDraw();
@@ -92,6 +94,7 @@ int WINAPI wWinMain(
 		}
 	}
 
+	// once loop is stopped, delete the graphics and free memory
 #pragma endregion
 	delete graphics;
 	return 0;
