@@ -1,91 +1,103 @@
 #include "SpriteSheet.h"
 
-/****************************************************
-The concept behind this class is that it will be passed
-a filename and graphics object/rendertarget, then, will
-proceed to create the needed WIC components to read, 
-decode, and then encode the bitmap file from disk into
-a compatible D2D bitmap. 
-
-We need this approach to be able to address pretty much
-any bitmap from disk/resources into the game and use it
-within Directx (D2D specifically for now)
-
-*******************************************************/
+/***********************************************************************************
+*	Class:		SpriteSheet														   *
+*	Author:		Shreyansh Tiwari												   *
+*	Reference:	Sample code by Russell Foubert									   *
+*	Purpose:	The purpose of this class is to create wic components, decode the  *
+*				the resource image file and encode it again into bitmap.		   *
+*				This file is passed filename and pointer to render target as 	   *
+*				parameter.														   *
+************************************************************************************/
 
 
 SpriteSheet::SpriteSheet(wchar_t* filename, Graphics* gfx)
 {
-	this->gfx = gfx; //save the gfx parameter for later
-	bmp = NULL; //This needs to be NULL to start off
+	this->gfx = gfx; 
+	bmp = NULL; 
 	HRESULT hr;
 
-	//Step 1: Create a WIC Factory
+	// creating a WIC factory
 	IWICImagingFactory *wicFactory = NULL;
+	
 	hr = CoCreateInstance(
-		CLSID_WICImagingFactory, //CLS ID of the object about to be made
-		NULL, //not needed here, but just denotes this isn't part of an aggregate
-		CLSCTX_INPROC_SERVER, //Indicates this DLL runs in the same process
-		IID_IWICImagingFactory, //Reference to an Interface that talks to the object
-		(LPVOID*)&wicFactory); //This is our pointer to the WICFactory, once set up.
+		CLSID_WICImagingFactory, 
+		NULL, 
+		CLSCTX_INPROC_SERVER, 
+		IID_IWICImagingFactory, 
+		(LPVOID*)&wicFactory); 
 
-//Step 2: Create a Decoder to read file into a WIC Bitmap
+	// creating a decoder to read into bitmap file
 	IWICBitmapDecoder *wicDecoder = NULL;
 	hr = wicFactory->CreateDecoderFromFilename(
-		filename, //The filename we passed in already
-		NULL, //This can be used to indicate other/preferred decoders. Not something we need.
-		GENERIC_READ, //indicates we're reading from the file, vs writing, etc.
-		WICDecodeMetadataCacheOnLoad, //Needed, but would only help if we were keeping this in WIC
-		&wicDecoder); //Our pointer to the Decoder we've setup
+		filename, 
+		NULL, 
+		GENERIC_READ, 
+		WICDecodeMetadataCacheOnLoad, 
+		&wicDecoder); 
 
-//Step 3: Read a 'frame'. We're really just moving the whole image into a frame here
+	// Read a 'frame'
 	IWICBitmapFrameDecode* wicFrame = NULL;
-	hr = wicDecoder->GetFrame(0, &wicFrame); //0 here means the first frame... or only one in our case
-	//Now, we've got a WICBitmap... we want it to be a D2D bitmap
+	hr = wicDecoder->GetFrame(0, &wicFrame);
 
-//Step 4: Create a WIC Converter
+	// Create a WIC Converter
 	IWICFormatConverter *wicConverter = NULL;
+	
 	hr = wicFactory->CreateFormatConverter(&wicConverter);
 
-//Step 5: Configure the Converter
+	// Configure the Converter
 	hr = wicConverter->Initialize(
-		wicFrame, //Our frame from above
-		GUID_WICPixelFormat32bppPBGRA, //Pixelformat
-		WICBitmapDitherTypeNone, //not important for us here
-		NULL, //indicates no palette is needed, not important here
-		0.0, //Alpha Transparency, can look at this later
-		WICBitmapPaletteTypeCustom //Not important for us here
+		wicFrame, 
+		GUID_WICPixelFormat32bppPBGRA,
+		WICBitmapDitherTypeNone, 
+		NULL,
+		0.0, 
+		WICBitmapPaletteTypeCustom
 		);
 
-//Step 6: Create the D2D Bitmap! Finally!
+
+	//Create the D2D Bitmap! Finally!
 	gfx->GetRenderTarget()->CreateBitmapFromWicBitmap(
-		wicConverter, //Our friend the converter
-		NULL, //Can specify D2D1_Bitmap_Properties here, not needed now
-		&bmp //Our destination bmp we specified earlier in the header
+		wicConverter, 
+		NULL, 
+		&bmp 
 	);
 	
-	//Let us do some private object cleanup!
+	// memory cleanup
 	if (wicFactory) wicFactory->Release();
 	if (wicDecoder) wicDecoder->Release();
 	if (wicConverter) wicConverter->Release();
 	if (wicFrame) wicFrame->Release();
 }
 
+// Destructor that releases bitmap once use is finished
 SpriteSheet::~SpriteSheet()
 {
 	if (bmp) bmp->Release();
 }
 
+
+/*******************************************************************************************
+	Method:			Draw()
+	Parameters:		float x - top left x coordinate of bitmap
+					float y - top left y coordinate of bitmap
+					float swt - width to be reduced (to fit into grid)
+					float sht - height to be reducde (to fit into grid)
+					float wcentre - length to be pushed to get into centre
+					float hcentre - height to be pushed to get into centre
+	Returns:		void
+	Purpose:		The purpose of this method is to draw bitmap onto screen for user to be 
+					able to see it.
+********************************************************************************************/
 void SpriteSheet::Draw(float x, float y, float swt, float sht, float wcentre, float hcentre)
 {
 	gfx->GetRenderTarget()->DrawBitmap(
-		bmp, //Bitmap we built from WIC
+		bmp, 
 		D2D1::RectF(x + wcentre, y + hcentre,
-			bmp->GetSize().width + x - swt, bmp->GetSize().height + y - sht), //Destination rectangle
-		0.8f, //Opacity or Alpha
-		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
-		//Above - the interpolation mode to use if this object is 'stretched' or 'shrunk'. 
-		//Refer back to lecture notes on image/bitmap files
+			bmp->GetSize().width + x - swt, bmp->GetSize().height + y - sht), 
+		0.8f, //Opacity
+		D2D1_BITMAP_INTERPOLATION_MODE::D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,	
 		D2D1::RectF(0, 0, bmp->GetSize().width, bmp->GetSize().height) //Source Rect
 		);
 }
+

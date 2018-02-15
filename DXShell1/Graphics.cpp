@@ -1,12 +1,8 @@
 #include "Graphics.h"
 
-/***********************************************************************************
-The intent of the Graphics class is to handle our DirectX calls, and to be largely responsible 
-for managing the rendertarget.
-******************************************************************************************/
-
-
-//Constructor for Graphics class
+//	 Method:		Graphics()
+//	 Type:			Contructor
+//	 Purpose:		Initialise the private variables
 Graphics::Graphics()
 {
 	factory = NULL;
@@ -14,10 +10,10 @@ Graphics::Graphics()
 	brush = NULL;
 }
 
-//Destructor for Graphics class
-//Note that all COM objects we instantiate should be 'released' here 
-//Look for comments on COM usage in the corresponding header file.
 
+//	 Method:		~Graphics()
+//	 Type:			Destructor
+//	 Purpose:		Release the private variables
 Graphics::~Graphics()
 {
 	if (factory) factory->Release();
@@ -25,9 +21,13 @@ Graphics::~Graphics()
 	if (brush) brush->Release();
 }
 
-//Provide some comments for each of the methods below.
-//Be sure you get a sense of what is happening, and resolve any issues you have understanding these
-// methods, their parameters, returns and so on.
+/*
+	Method:		Init()
+	Parameter:	HWND windowhandle - reference to our main window (output window)
+	Return:		true or false based on success of initialisation 
+	Purpose:	The purpose of this method is to initialise the main window, with 
+				its resolution and color.
+*/
 bool Graphics::Init(HWND windowHandle)
 {
 	HRESULT res = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory);
@@ -49,26 +49,32 @@ bool Graphics::Init(HWND windowHandle)
 	return true;
 }
 
+
+//	Method:		ClearScreen()
+//	Parameters:	r - red ratio, g - green ratio, b - blue ratio	
+//	Purpose:	Clears the screen.
 void Graphics::ClearScreen(float r, float g, float b) 
 {
 	rendertarget->Clear(D2D1::ColorF(r, g, b));
 }
 
-void Graphics::DrawCircle(float x, float y, float radius, float r, float g, float b, float a)
-{
-	brush->SetColor(D2D1::ColorF(r, g, b, a));
-	rendertarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius), brush, 3.0f);	
-}
-
+/*
+	Method:		DragGrid()
+	Parameter:	void
+	Return:		void
+	Purpose:	This method gets the resolution (width and height), and divide 
+				it by 10 to get the x and y coordinate of each grid (imaginary)
+				It also stores all of them in the private 3d float array, 
+				which has accessor to allow other classes to access it.
+	Reference:	MSDN
+*/
 void Graphics::DrawGrid()
 {
 	D2D1_SIZE_F rtSize = rendertarget->GetSize();
 
 	// Draw a grid background.
-	float width = rtSize.width;
-	float height = rtSize.height;
-	float gridheight = height / 10;
-	float gridwidth = width / 10;
+	float gridheight = rtSize.height / 10;
+	float gridwidth = rtSize.width / 10;
 
 	//int count = 0;
 	float x = 0;
@@ -184,6 +190,8 @@ void Graphics::DeleteArray3D()
 	}
 	delete[] array3d;
 }
+
+
 
 
 

@@ -1,8 +1,15 @@
+/********************************************************************************************
+*	File:		SpriteSheeet.cpp															*
+*	Author:		Shreyansh Tiwari															*
+*	Date:		14th February, 2018															*
+*	Purpose:	This a header for SpriteSheet class, it contains all the method prototypes	*
+*				private variables declaration												*
+*********************************************************************************************/
+
 #pragma once
 
-#include <wincodec.h> //This is the WIC codec header - we need this to decode image files
-#include "Graphics.h" //This includes both Windows and D2D libraries
-//Remember to add "windowscodecs.lib" to your Linker/Input/AdditionalDependencies
+#include <wincodec.h> // wic coder header
+#include "Graphics.h" 
 
 class SpriteSheet
 {
@@ -18,5 +25,4 @@ public:
 
 	//Draw bitmap to the render target
 	void Draw(float x, float y, float swt, float sht, float wcentre, float hcentre);
-
 };

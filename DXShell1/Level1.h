@@ -17,7 +17,6 @@ class Level1 : public GameLevel
 	int fx1, fy1;
 	int fx2, fy2;
 	int fx3, fy3;
-	int SpaceshipPosition;
 	bool ChangePosition;
 
 
