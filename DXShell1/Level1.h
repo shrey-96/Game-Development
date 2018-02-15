@@ -1,5 +1,5 @@
 /******************************************************************************************************
-*	File:		Level1.h																			  *
+*	Class:		Level1																				  *
 *	Author:		Shreyansh Tiwari																	  *
 *	Date:		14th February, 2018																	  *
 *	Purpose:	The pupose of this file is to manipulate the coordinates of spaceship (triangle)	  *
