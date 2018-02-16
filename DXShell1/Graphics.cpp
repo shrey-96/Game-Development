@@ -136,8 +136,8 @@ void Graphics::DrawTriangle(float fc, float sc)
 
 	// array of points that joins vertex
 	D2D1_POINT_2F points[2] = {
-		D2D1::Point2F(fc - 20, sc - 30),
-		D2D1::Point2F(fc + 20, sc - 30)
+		D2D1::Point2F(fc - 35, sc - 40),
+		D2D1::Point2F(fc + 35, sc - 40)
 	};
 
 	// add lines to join the coordinates

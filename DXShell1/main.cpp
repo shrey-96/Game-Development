@@ -1,13 +1,18 @@
-/*********************************************************************************
-*	File:		main.cpp														 *
-*	Author:		Shreyansh Tiwari												 *
-*	Date:		14th February, 2018												 *
-*	Purpose:	This file invokes sets the attribute of main window, and it		 *
-*				invokes other classes such as gamecontroller for rendering		 *
-*				graphics for rendertarget, and level1 for game logic.			 *
-*				This file consist of infinite loop that keeps the game running	 *
-*				until interrupted.												 *
-**********************************************************************************/
+/***********************************************************************************
+*	File:		main.cpp														   *
+*	Author:		Shreyansh Tiwari												   *
+*	Date:		14th February, 2018												   *
+*	Purpose:	This file invokes sets the attribute of main window, and it		   *
+*				invokes other classes such as gamecontroller for rendering		   *
+*				graphics for rendertarget, and level1 for game logic.			   *
+*				This file consist of infinite loop that keeps the game running	   *
+*				until interrupted.												   *
+*																				   *
+*	Note:		Majority of code, from this file and all other files is from	   *
+*				sample code provided by Russell Foubert on econestoga. The author  *
+*				name being "Shreyansh Tiwari" doesn't mean all of it is written	   *
+*				by "Shreyansh Tiwari".										   	   *
+************************************************************************************/
 
 #include <Windows.h>
 #include "Graphics.h"
